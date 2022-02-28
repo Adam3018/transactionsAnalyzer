@@ -2,10 +2,17 @@ package com.opencsv.csvopen;
 
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import com.opencsv.CSVParser;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
@@ -18,40 +25,62 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class UploadController {
-
+    public int rowNum;
     @GetMapping("/adam")
 
     public String index(){
-        return "aa";
+        return "adam";
     }
 
-    @PostMapping("/upload-csv-file")
-
-    public String uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) {
-
-        if (file.isEmpty()){
-            model.addAttribute("message","Please select a CSV file to upload.");
-            model.addAttribute("status", false);
-
-        }
-        else {
-            try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))){
-                CsvToBean<Transaction> csvToBean = new CsvToBeanBuilder(reader)
-                .withType(Transaction.class)
-                .withIgnoreLeadingWhiteSpace(true)
-                .build();
-
-                List<Transaction> trns = csvToBean.parse();
-
-                model.addAttribute("transactions", trns);
-                model.addAttribute("status",true);
+    @PostMapping("/upload")
+    
+    public int uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) throws Exception{
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
+            String line="";
+            while((line = br.readLine()) != null){
+                String[] values = line.split(",");
+                System.out.println(values[0]);
+                rowNum++;
             }
-            catch (Exception ex){
-                model.addAttribute("message","An error occured");
-                model.addAttribute("status",false);
-            }
+            
         }
-        return "file-upload-status";
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+
+    //     List<Transaction> transList = new ArrayList<>();
+    //     InputStream inputStream=file.getInputStream();
+    //    // CSVParserSettings setting=new CSVParserSettings();
+    //     CSVParser parser = new CSVParser();
+    //     List<Record> parseAll = ((Object) parser).parseAllRecords(inputStream);
+    //     return null;
+
+        // if (file.isEmpty()){
+        //     model.addAttribute("message","Please select a CSV file to upload.");
+        //     model.addAttribute("status", false);
+
+        // }
+        // else {
+        //     try (Reader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))){
+        //         CsvToBean<Transaction> csvToBean = new CsvToBeanBuilder(reader)
+        //         .withType(Transaction.class)
+        //         .withIgnoreLeadingWhiteSpace(true)
+        //         .build();
+
+        //         List<Transaction> trns = csvToBean.parse();
+
+        //         model.addAttribute("transactions", trns);
+        //         model.addAttribute("status",true);
+        //     }
+        //     catch (Exception ex){
+        //         model.addAttribute("message","An error occured");
+        //         model.addAttribute("status",false);
+        //     }
+        // }
+        return rowNum;
     }
     
 }
