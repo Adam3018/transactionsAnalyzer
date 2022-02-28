@@ -26,24 +26,27 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class UploadController {
     public int rowNum;
+    public int profitLoss;
     @GetMapping("/adam")
 
     public String index(){
         return "adam";
     }
-
+    
     @PostMapping("/upload")
     
-    public int uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) throws Exception{
+    public String uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) throws Exception{
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String line="";
             while((line = br.readLine()) != null){
                 String[] values = line.split(",");
-                System.out.println(values[0]);
+                profitLoss= profitLoss+Integer.parseInt(values[1]);
+                
+                //System.out.println(values[1]);
                 rowNum++;
             }
-            
+            System.out.println("Profit/loss= "+profitLoss);
         }
         catch(FileNotFoundException e){
             e.printStackTrace();
@@ -51,6 +54,9 @@ public class UploadController {
             e.printStackTrace();
         }
 
+        String rtrn = "Profit/loss: "+profitLoss+"\r\nNumber of rows: "+rowNum;
+        System.out.println(rtrn);
+        return rtrn;
     //     List<Transaction> transList = new ArrayList<>();
     //     InputStream inputStream=file.getInputStream();
     //    // CSVParserSettings setting=new CSVParserSettings();
@@ -80,7 +86,8 @@ public class UploadController {
         //         model.addAttribute("status",false);
         //     }
         // }
-        return rowNum;
+        //return rowNum;
+        
     }
     
 }
