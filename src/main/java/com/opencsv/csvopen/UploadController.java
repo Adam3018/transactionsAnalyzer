@@ -27,6 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadController {
     public int rowNum;
     public int profitLoss;
+    public int expense1;
+    public int expense2=0;
+    public int expense3;
     @GetMapping("/adam")
 
     public String index(){
@@ -43,10 +46,15 @@ public class UploadController {
                 String[] values = line.split(",");
                 profitLoss= profitLoss+Integer.parseInt(values[1]);
                 
-                //System.out.println(values[1]);
+                if(expense1>Integer.parseInt(values[1]))
+                expense1=Integer.parseInt(values[1]);
+                if(expense2!=expense1)
+                expense2=Integer.parseInt(values[1]);
+
+                
                 rowNum++;
             }
-            System.out.println("Profit/loss= "+profitLoss);
+           
         }
         catch(FileNotFoundException e){
             e.printStackTrace();
@@ -54,7 +62,7 @@ public class UploadController {
             e.printStackTrace();
         }
 
-        String rtrn = "Profit/loss: "+profitLoss+"\r\nNumber of rows: "+rowNum;
+        String rtrn = "Profit/loss: "+profitLoss+"\r\nNumber of rows: "+rowNum+expense1+expense2;
         System.out.println(rtrn);
         return rtrn;
     //     List<Transaction> transList = new ArrayList<>();
