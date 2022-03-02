@@ -28,8 +28,26 @@ public class UploadController {
     public int rowNum;
     public int profitLoss;
     public int expense1;
-    public int expense2=0;
+    public int expense2;
+    public int prev;
+    public int prev1;
     public int expense3;
+    public int transNumJan=0;
+    public int transNumFeb=0;
+    public int transNumMar=0;
+    public int transNumApr=0;
+    public int transNumMay=0;
+    public int transNumJun=0;
+    public int transNumJul=0;
+    public int transNumAvg=0;
+    public int transNumSep=0;
+    public int transNumOct=0;
+    public int transNumNov=0;
+    public int transNumDec=0;
+    String ts;
+    String ts2;
+    String ts3;
+    
     @GetMapping("/adam")
 
     public String index(){
@@ -45,15 +63,60 @@ public class UploadController {
             while((line = br.readLine()) != null){
                 String[] values = line.split(",");
                 profitLoss= profitLoss+Integer.parseInt(values[1]);
-                
-                if(expense1>Integer.parseInt(values[1]))
-                expense1=Integer.parseInt(values[1]);
-                if(expense2!=expense1)
-                expense2=Integer.parseInt(values[1]);
 
+                int hlp=values[0].charAt(4);
+                if(hlp==49)
+                transNumJan++;
+                else if(hlp==50)
+                transNumFeb++;
+                else if(hlp==51)
+                transNumMar++;
+                else if(hlp==52)
+                transNumApr++;
+                else if(hlp==53)
+                transNumMay++;
+                else if(hlp==54)
+                transNumJun++;
+                else if(hlp==55)
+                transNumJul++;
+                else if(hlp==56)
+                transNumAvg++;
+                else if(hlp==57)
+                transNumSep++;
+                else if(hlp==58)
+                transNumOct++;
+                else if(hlp==59)
+                transNumNov++;
+                else if(hlp==60)
+                transNumDec++;
+
+
+                if(expense1>Integer.parseInt(values[1]))
+                {
+                expense1=Integer.parseInt(values[1]);
+                ts=expense1+" "+values[2];
+                }
+                if(expense2>Integer.parseInt(values[1]))
+                {
+                expense2=Integer.parseInt(values[1]);
+                ts2=expense2+" "+values[2];
+                }
+                if(expense3>Integer.parseInt(values[1]))
+                {
+                expense3=Integer.parseInt(values[1]);
+                ts3=expense3+" "+values[2];
+                }
+                if(expense2==expense1)
+                expense2=prev;
+                if(expense3==expense2 || expense3==expense1)
+                expense3=prev1;
                 
+                prev=expense2;
+                prev1=expense3;
                 rowNum++;
+                
             }
+           
            
         }
         catch(FileNotFoundException e){
@@ -62,8 +125,26 @@ public class UploadController {
             e.printStackTrace();
         }
 
-        String rtrn = "Profit/loss: "+profitLoss+"\r\nNumber of rows: "+rowNum+expense1+expense2;
-        System.out.println(rtrn);
+        System.out.println(expense1+" "+expense2+" "+expense3);
+
+        String rtrn = "Number of rows: "+rowNum+
+        "\nProfit/loss: "+profitLoss+
+        "\nNum1 expense: "+ts+
+        "\nNum2 expense: "+ts2+
+        "\nNum3 expense: "+ts3+
+        "\nTransactions per month:\r\nJan "+transNumJan+
+        "\nFeb "+transNumFeb+
+        "\nMar "+transNumMar+
+        "\nApr "+transNumApr+
+        "\nMay "+transNumMay+
+        "\nJun "+transNumJun+
+        "\nJul "+transNumJul+
+        "\nAvg "+transNumAvg+
+        "\nSep "+transNumSep+
+        "\nOct "+transNumOct+
+        "\nNov "+transNumNov+
+        "\nDec "+transNumDec;
+
         return rtrn;
     //     List<Transaction> transList = new ArrayList<>();
     //     InputStream inputStream=file.getInputStream();
