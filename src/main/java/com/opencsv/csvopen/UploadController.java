@@ -16,7 +16,6 @@ import java.util.Map;
 import java.text.SimpleDateFormat;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,11 +42,6 @@ public class UploadController {
     HashSet<Integer> hashTransactionValues = new HashSet<Integer>();
     public CsvOriginal csv;
     ArrayList<CsvOriginal> csvList = new ArrayList<CsvOriginal>();
-    
-    @GetMapping("/index")
-    public String aa(String aaa){
-        return "aaaa";
-    }
 
     @PostMapping("/upload")
     public Transaction uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) throws Exception{
@@ -58,7 +52,7 @@ public class UploadController {
             
             while((line = br.readLine()) != null){
                 String[] values = line.split(",");
-
+                System.out.println("AAaaaa");
                 csvList.add(new CsvOriginal(values[0], values[1], values[2]));
                 csv= new CsvOriginal(values[0], values[1], values[2]);
 
@@ -142,7 +136,7 @@ public class UploadController {
         // "\nNov "+transNumNov+
         // "\nDec "+transNumDec;
 
-        return new Transaction(rowNum, listValues.get(0), listValues.get(1), listValues.get(2),s,
+        return new Transaction(rowNum, listValues.get(0), listValues.get(1), listValues.get(2),
          profitLoss, transNumJan, transNumFeb, transNumMar, transNumApr, transNumMay, transNumJun, transNumJul, transNumAvg, transNumSep
          , transNumOct, transNumNov, transNumDec);
 

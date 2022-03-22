@@ -7,7 +7,7 @@ public class Transaction {
         private int ClistValues1;
         private int ClistValues2;
         private int ClistValues3;
-        private String CexpensePerCategory;
+        // private String CexpensePerCategory;
         private int CprofitLoss;
         private int CtransJan;
         private int CtransFeb;
@@ -24,14 +24,14 @@ public class Transaction {
 
         
         public Transaction(int crowNum, int clistValues1, int clistValues2, int clistValues3,
-                String cexpensePerCategory, int cprofitLoss, int ctransJan, int ctransFeb, int ctransMar, int ctransApr,
+                 int cprofitLoss, int ctransJan, int ctransFeb, int ctransMar, int ctransApr,
                 int ctransMay, int ctransJun, int ctransJul, int ctransAvg, int ctransSep, int ctransOct, int ctransNov,
                 int ctransDec) {
             CrowNum = crowNum;
             ClistValues1 = clistValues1;
             ClistValues2 = clistValues2;
             ClistValues3 = clistValues3;
-            CexpensePerCategory = cexpensePerCategory;
+            // CexpensePerCategory = cexpensePerCategory;
             CprofitLoss = cprofitLoss;
             CtransJan = ctransJan;
             CtransFeb = ctransFeb;
@@ -88,14 +88,14 @@ public class Transaction {
         }
 
 
-        public String getCexpensePerCategory() {
-            return CexpensePerCategory;
-        }
+        // public String getCexpensePerCategory() {
+        //     return CexpensePerCategory;
+        // }
 
 
-        public void setCexpensePerCategory(String cexpensePerCategory) {
-            CexpensePerCategory = cexpensePerCategory;
-        }
+        // public void setCexpensePerCategory(String cexpensePerCategory) {
+        //     CexpensePerCategory = cexpensePerCategory;
+        // }
 
 
         public int getCprofitLoss() {
