@@ -43,10 +43,11 @@ public class UploadController {
     public CsvOriginal csv;
     ArrayList<CsvOriginal> csvList = new ArrayList<CsvOriginal>();
 
-    @PostMapping("/upload")
-    public Transaction uploadCSVFile(@RequestParam("file") MultipartFile file, Model model) throws Exception{
+    @PostMapping(value="/upload", consumes="multipart/form-data", produces = "application/json")
+    public Transaction uploadCSVFile(@RequestParam("file") MultipartFile file) throws Exception{
         try {
-            
+            if(file==null)
+            return null;
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
             String line="";
             

@@ -6,37 +6,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>demo</title>
-
+    
 
 </head>
 
 <body>
 
     <form onsubmit="submitForm(event)">
-        <input type="file">
+        <input type="file" id="fileInput" multiple>
         <button type="submit">Submit</button>
     </form>
+    <div id="dataDisplay">
+
+    </div>
 
     <script>
 
         function submitForm(event) {
             
             event.preventDefault();
-            console.log("hello from submitForm")
+            console.log("hello from submitForm");
+            //debugger;
+            const fd = new FormData();
+            const file = document.getElementById("fileInput").files[0];
+            fd.append("file",file)
             
+            fetch('http://localhost:8080/upload',{
+                method: "post",
+                // headers: {
+                //     // 'Content-type':'multipart/form-data'
+                // },
+                body: fd
+            })
+            .then(response => response.json())
+            .then(data=>renderData(data))
 
-            fetch('http://localhost:8080/upload', {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: 'User 1'
-            })
-            })
-            .then(response => {return response.json()})
-            .then(data=>console.log(data))
-            
+
+
+    //         function handleRequest() {
+    //         axios.post("http://localhost:8080/upload", {name: "data"}).then(function (response) {
+    //         console.log(JSON.stringify(response))
+        
+    // })
+}
+
+    function renderData(data){
+        
+        console.log(data);
+        const dataDisplay = document.getElementById("dataDisplay");
+        dataDisplay.innerHTML=`<pre>${JSON.stringify(data,null,2)}</pre>`
     }
 
     </script>
