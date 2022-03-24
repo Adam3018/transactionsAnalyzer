@@ -15,113 +15,118 @@ import java.util.List;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @RestController
 public class UploadController {
     public int rowNum;
     public int profitLoss;
-    public int transNumJan=0;
-    public int transNumFeb=0;
-    public int transNumMar=0;
-    public int transNumApr=0;
-    public int transNumMay=0;
-    public int transNumJun=0;
-    public int transNumJul=0;
-    public int transNumAvg=0;
-    public int transNumSep=0;
-    public int transNumOct=0;
-    public int transNumNov=0;
-    public int transNumDec=0;
-    Map<String,List<Integer>> hashMapTransactions = new HashMap<>();
+    public int transNumJan = 0;
+    public int transNumFeb = 0;
+    public int transNumMar = 0;
+    public int transNumApr = 0;
+    public int transNumMay = 0;
+    public int transNumJun = 0;
+    public int transNumJul = 0;
+    public int transNumAvg = 0;
+    public int transNumSep = 0;
+    public int transNumOct = 0;
+    public int transNumNov = 0;
+    public int transNumDec = 0;
+    Map<String, List<Integer>> hashMapTransactions = new HashMap<>();
     HashSet<Integer> hashTransactionValues = new HashSet<Integer>();
     public CsvOriginal csv;
     ArrayList<CsvOriginal> csvList = new ArrayList<CsvOriginal>();
 
-    @PostMapping(value="/upload", consumes="multipart/form-data", produces = "application/json")
-    public Transaction uploadCSVFile(@RequestParam("file") MultipartFile file) throws Exception{
+    @PostMapping(value = "/upload", consumes = "multipart/form-data", produces = "application/json")
+    public Transaction uploadCSVFile(@RequestParam("file") MultipartFile file) throws Exception {
         try {
-            if(file==null)
-            return null;
+            if (file == null)
+                return null;
             BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
-            String line="";
-            
-            while((line = br.readLine()) != null){
-                String[] values = line.split(",");
-                System.out.println("AAaaaa");
-                csvList.add(new CsvOriginal(values[0], values[1], values[2]));
-                csv= new CsvOriginal(values[0], values[1], values[2]);
+            String line = "";
 
-                if(hashMapTransactions.containsKey(values[2]))
-                hashMapTransactions.get(values[2]).add(Integer.parseInt(values[1]));
-                else
-                {
-                List<Integer> list = new ArrayList<>();
-                list.add(Integer.parseInt(values[1]));
-                hashMapTransactions.put(values[2], list);
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+
+                csvList.add(new CsvOriginal(values[0], values[1], values[2]));
+                csv = new CsvOriginal(values[0], values[1], values[2]);
+
+                if (hashMapTransactions.containsKey(values[2]))
+                    hashMapTransactions.get(values[2]).add(Integer.parseInt(values[1]));
+                else {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(Integer.parseInt(values[1]));
+                    hashMapTransactions.put(values[2], list);
                 }
 
                 hashTransactionValues.add(Integer.parseInt(values[1]));
-                
 
-                profitLoss= profitLoss+Integer.parseInt(values[1]);
-                
+                profitLoss = profitLoss + Integer.parseInt(values[1]);
 
-                Date simpleDate=new SimpleDateFormat("dd-MM-yyyy").parse(values[0]);
-                Calendar cal=new GregorianCalendar();
+                Date simpleDate = new SimpleDateFormat("dd-MM-yyyy").parse(values[0]);
+                Calendar cal = new GregorianCalendar();
                 cal.setTime(simpleDate);
 
-                int month=cal.get(Calendar.MONTH)+1;
+                int month = cal.get(Calendar.MONTH) + 1;
 
                 switch (month) {
-                    case 1:  transNumJan++;
-                             break;
-                    case 2:  transNumFeb++;
-                             break;
-                    case 3:  transNumMar++;
-                             break;
-                    case 4:  transNumApr++;
-                             break;
-                    case 5:  transNumMay++;
-                             break;
-                    case 6:  transNumJun++;
-                             break;
-                    case 7:  transNumJul++;
-                             break;
-                    case 8:  transNumAvg++;
-                             break;
-                    case 9:  transNumSep++;
-                             break;
-                    case 10: transNumOct++;
-                             break;
-                    case 11: transNumNov++;
-                             break;
-                    case 12: transNumDec++;
-                             break;
+                    case 1:
+                        transNumJan++;
+                        break;
+                    case 2:
+                        transNumFeb++;
+                        break;
+                    case 3:
+                        transNumMar++;
+                        break;
+                    case 4:
+                        transNumApr++;
+                        break;
+                    case 5:
+                        transNumMay++;
+                        break;
+                    case 6:
+                        transNumJun++;
+                        break;
+                    case 7:
+                        transNumJul++;
+                        break;
+                    case 8:
+                        transNumAvg++;
+                        break;
+                    case 9:
+                        transNumSep++;
+                        break;
+                    case 10:
+                        transNumOct++;
+                        break;
+                    case 11:
+                        transNumNov++;
+                        break;
+                    case 12:
+                        transNumDec++;
+                        break;
                 }
                 rowNum++;
             }
-        }
-        catch(FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         List<Integer> listValues = new ArrayList<Integer>(hashTransactionValues);
         Collections.sort(listValues);
 
-        
-
-        String s=hashMapTransactions.toString();
+        String s = hashMapTransactions.toString();
 
         // String rtrn = "Number of rows: "+rowNum+
-        // "\n\nTop 3 expenses: "+listValues.get(0)+"\n"+listValues.get(1)+"\n"+listValues.get(2)+
+        // "\n\nTop 3 expenses:
+        // "+listValues.get(0)+"\n"+listValues.get(1)+"\n"+listValues.get(2)+
         // "\n\nExpense per category: "+s+
         // "\n\nProfit/loss: "+profitLoss+
         // "\n\nTransactions per month:\r\nJan "+transNumJan+
@@ -137,17 +142,12 @@ public class UploadController {
         // "\nNov "+transNumNov+
         // "\nDec "+transNumDec;
 
-        return new Transaction(rowNum, listValues.get(0), listValues.get(1), listValues.get(2),
-         profitLoss, transNumJan, transNumFeb, transNumMar, transNumApr, transNumMay, transNumJun, transNumJul, transNumAvg, transNumSep
-         , transNumOct, transNumNov, transNumDec);
+        return new Transaction(rowNum, listValues.get(0), listValues.get(1), listValues.get(2), s,
+                profitLoss, transNumJan, transNumFeb, transNumMar, transNumApr, transNumMay, transNumJun, transNumJul,
+                transNumAvg, transNumSep, transNumOct, transNumNov, transNumDec);
 
-        
-        //return csvList;
+        // return csvList;
 
-
-        
     }
 
-   
-    
 }

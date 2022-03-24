@@ -1,0 +1,80 @@
+.tableclass {
+    margin: 50px 50px;
+    font:1.2em normal Arial,sans-serif;
+    border-collapse: collapse;
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 20px;
+    width: 300px;
+    height: 150px;
+    
+}
+
+
+
+.tableclass th{
+    background-color: #78a313;
+    border-left: 1px solid #5f810e;
+    text-align: center;
+}
+.tableclass tbody td{
+   
+    border-left: 1px solid #ddd;
+    text-align: center;
+}
+
+.tableclass th,
+.tableclass td {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    
+    height: 50px;
+}
+
+.tableclass tbody tr:hover{
+    background-color: #2d5bb1;
+    color: white;
+}
+
+.tableclass tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+
+#fileInput {
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 45%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+}
+
+#sbmt{
+    margin: 0;
+    position: absolute;
+    top: 10%;
+    left: 55%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#dataDisplay {
+    margin: 0;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+   
+}
+
+#dataDisplay2 {
+    margin: 0;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+   
+}

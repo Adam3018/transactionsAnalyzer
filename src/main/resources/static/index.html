@@ -5,57 +5,134 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>demo</title>
-    
+    <title>TransactionAnalyzer</title>
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
     <form onsubmit="submitForm(event)">
-        <input type="file" id="fileInput" multiple>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="dataDisplay">
+        <input type="file" id="fileInput">
+        <button type="submit" id="sbmt">Submit</button>
 
-    </div>
+    </form>
+    <div id="dataDisplay"></div>
+    <div id="dataDisplay2"></div>
 
     <script>
 
         function submitForm(event) {
-            
+
             event.preventDefault();
-            console.log("hello from submitForm");
+
             //debugger;
             const fd = new FormData();
             const file = document.getElementById("fileInput").files[0];
-            fd.append("file",file)
-            
-            fetch('http://localhost:8080/upload',{
+            fd.append("file", file)
+
+            fetch('http://localhost:8080/upload', {
                 method: "post",
-                // headers: {
-                //     // 'Content-type':'multipart/form-data'
-                // },
                 body: fd
             })
-            .then(response => response.json())
-            .then(data=>renderData(data))
+                .then(response => response.json())
+                .then(data => renderData(data))
+
+            document.getElementById("sbmt").remove();
+            document.getElementById("fileInput").remove();
 
 
+        }
 
-    //         function handleRequest() {
-    //         axios.post("http://localhost:8080/upload", {name: "data"}).then(function (response) {
-    //         console.log(JSON.stringify(response))
-        
-    // })
-}
+        function renderData(data) {
 
-    function renderData(data){
-        
-        console.log(data);
-        const dataDisplay = document.getElementById("dataDisplay");
-        dataDisplay.innerHTML=`<pre>${JSON.stringify(data,null,2)}</pre>`
-    }
+            console.log(data);
+
+            const dataDisplay = document.getElementById("dataDisplay");
+            dataDisplay.innerHTML = `<pre>
+            <table class="tableclass">
+  <thead>
+  <tr>
+    <th>Top 3 expenses</th>
+  </tr>
+  
+  </thead>
+  <tbody>
+    <tr>
+    <td>${data.clistValues1}</td>
+  </tr>
+  <tr>
+    <td>${data.clistValues2}</td>
+  </tr>
+  <tr>
+    <td>${data.clistValues3}</td>
+  </tr>
+  </tbody>
+</table>
+</pre>`
+
+dataDisplay2.innerHTML=`<pre>
+<table class="tableclass">
+  <thead>
+  <tr>
+    <th>Month</th>
+    <th>Transactions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>January</td>
+    <td>${data.ctransJan}</td>
+  </tr>
+  <tr>
+    <td>February</td>
+    <td>${data.ctransFeb}</td>
+  </tr>
+  <tr>
+    <td>March</td>
+    <td>${data.ctransMar}</td>
+  </tr>
+  <tr>
+    <td>April</td>
+    <td>${data.ctransApr}</td>
+  </tr>
+  <tr>
+    <td>May</td>
+    <td>${data.ctransMay}</td>
+  </tr>
+  <tr>
+    <td>June</td>
+    <td>${data.ctransJun}</td>
+  </tr>
+  <tr>
+    <td>July</td>
+    <td>${data.ctransJul}</td>
+  </tr>
+  <tr>
+    <td>August</td>
+    <td>${data.ctransAvg}</td>
+  </tr>
+  <tr>
+    <td>September</td>
+    <td>${data.ctransSep}</td>
+  </tr>
+  <tr>
+    <td>October</td>
+    <td>${data.ctransOct}</td>
+  </tr>
+  <tr>
+    <td>November</td>
+    <td>${data.ctransNov}</td>
+  </tr>
+  <tr>
+    <td>December</td>
+    <td>${data.ctransDec}</td>
+  </tr>
+  </tbody>
+</table>
+</pre>`
+
+        }
 
     </script>
 
